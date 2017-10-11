@@ -8,7 +8,9 @@
     // Instanciate the map
     Highcharts.mapChart('container', {
         chart: {
-            borderWidth: 1
+            borderWidth: 1,
+            enableMouseWheelZoom: true,
+            zoomType: "xy"
         },
     
         title: {
