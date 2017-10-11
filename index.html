@@ -1,1 +1,33 @@
-Hello World
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    body {
+        background: #000;
+    }
+    canvas {
+      display: none;
+    }
+</style>
+<!-- http://www.basscss.com/ -->
+<link href="//npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
+<!-- http://clrs.cc/ -->
+<link href="//s3-us-west-2.amazonaws.com/colors-css/2.2.0/colors.min.css" rel="stylesheet">
+
+<section id="vis"></section>
+
+<!-- dependencies -->
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="//rawgit.com/mbostock/7833311/raw/27d0f5623105fd8815e1a42b80cbd4d27d292d53/d3.hexbin.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script src="//d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js" charset="utf-8"></script>
+<!-- d3 code -->
+<script src="script-compiled.js" charset="utf-8"></script>
+
+<script>
+    // call chart 
+    let chart = hexmap();
+    // apply chart to DOM
+    d3.select('#vis')
+       .call(chart);
+</script>
