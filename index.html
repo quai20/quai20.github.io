@@ -2,7 +2,7 @@
 <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
 
 
-<div id="container" style="height: 1200px; min-width: 310px; max-width: 900px; margin: 0 auto"></div>
+<div id="container" style="height: 800px; min-width: 310px; max-width: 1200px; margin: 0 auto"></div>
 
 <script>
     // Instanciate the map
@@ -14,33 +14,39 @@
         title: {
             text: 'Where I\'ve been'
         },
-        subtitle: {
-            text: 'Demo of drawing all areas in the map, only highlighting partial data'
-        },
-    
         legend: {
             enabled: false
         },
     
         series: [{
             name: 'Country',
-            mapData: Highcharts.maps['custom/europe'],
+            mapData: Highcharts.maps['custom/world'],
             data: [
-                ['is', 1],
-                ['no', 1],
-                ['se', 1],
+                ['us', 1],
+                ['ca', 1],
+                ['tz', 1],
+                ['ke', 1],
+                ['eg', 1],
+                ['id', 1],
+                ['kr', 1],
+                ['jp', 1],
+                ['us', 1],
+                ['gl', 1],
+                ['sg', 1],            
+                ['fr', 1],
+                ['de', 1],
+                ['gb', 1],
+                ['ie', 1],
+                ['be', 1],
+                ['es', 1],
+                ['it', 1],
+                ['gr', 1],
+                ['cz', 1],
+                ['ad', 1],
+                ['va', 1],
                 ['dk', 1],
-                ['fi', 1]
-            ],
-            dataLabels: {
-                enabled: true,
-                color: '#FFFFFF',
-                formatter: function () {
-                    if (this.point.value) {
-                        return this.point.name;
-                    }
-                }
-            },
+                ['ch', 1]
+            ],            
             tooltip: {
                 headerFormat: '',
                 pointFormat: '{point.name}'
