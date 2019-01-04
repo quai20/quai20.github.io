@@ -31,7 +31,7 @@
 
 <!-- Playback -->
 <link rel="stylesheet" href="dist/Leaflet.TrackPlayBack-master/dist/control.playback.css">
-<!--<script src="dist/Leaflet.TrackPlayBack-master/dist/control.trackplayback.js"></script>-->
+<script src="dist/Leaflet.TrackPlayBack-master/dist/control.trackplayback.js"></script>
 <script src="dist/Leaflet.TrackPlayBack-master/dist/leaflet.trackplayback.js"></script>
 <script type="text/javascript" src="dist/Datejs-master/build/date.js"></script>
 
@@ -77,8 +77,8 @@ const Options = {
 }
 
 const trackplayback = L.trackplayback(tdata, map, Options);
-//const trackplaybackControl = L.trackplaybackcontrol(trackplayback);
-//trackplaybackControl.addTo(map);
+const trackplaybackControl = L.trackplaybackcontrol(trackplayback);
+trackplaybackControl.addTo(map);
 
 trackplayback.start()
 
