@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title> GULF STREAM 2018 </title>
+<meta charset="utf-8">
+
+<center><span id="kloader">
+
+	<div class='container'>
+	  <div class='loader'>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--text'></div>
+	  </div>
+	</div>
+</span></center>
+
+<link rel="stylesheet" href="my.css" />
+<!--leaflet & jquery-->
+<script src="dist/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" href="dist/leaflet/leaflet.css" />
+<script src="dist/leaflet/leaflet.js"></script>
+
+<!-- Mouse position -->
+<link rel="stylesheet" href="dist/Leaflet.MousePosition-master/src/L.Control.MousePosition.css" />
+<script src="dist/Leaflet.MousePosition-master/src/L.Control.MousePosition.js"></script>
+
+<!-- Playback -->
+<link rel="stylesheet" href="dist/Leaflet.TrackPlayBack-master/dist/control.playback.css">
+<script src="dist/Leaflet.TrackPlayBack-master/dist/control.trackplayback.js"></script>
+<script src="dist/Leaflet.TrackPlayBack-master/dist/leaflet.trackplayback.js"></script>
+<script type="text/javascript" src="dist/Datejs-master/build/date.js"></script>
+
+<!-- Some Data -->
+<script src="ArgoPos2018.js"></script>
+
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+document.getElementById("kloader").textContent="";
+//MAP CREATION
+var map = L.map('map').setView([41, -48], 5);
+map.options.maxZoom=14;
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 19
+}).addTo(map);
+//MOUSE POSITION
+L.control.mousePosition().addTo(map);
+
+var tdata=[];
+//LOOP ON FLOAT (4577)
+for (var i = 1; i < float_number; i++)
+{		
+	var tempD=[]
+	eval('ldata=data_'+i.toString());
+	for (var j = 0; j < ldata.length; j++)
+	{
+		tempD.push({lat:ldata[j].latitude,lng:ldata[j].longitude,time:date2unix(ldata[j].time),info:[{key:'name :',value:ldata[j].wmo}]})	
+		time_end=date2unix(ldata[j].time)
+	}
+	tempD.push({lat:0,lng:0,time:time_end+1})	
+	tdata.push(tempD)
+}
+
+const Options = {
+  clockOptions: {speed: 22, maxSpeed: 30},
+  trackPointOptions: {isDraw: true, useCanvas: true, stroke: false, color: '#00ffec', fill: true, fillColor: '#00ffec', opacity: 0.2, radius: 2},
+  trackLineOptions: {isDraw: true, stroke: true, color: '#00ffec', weight: 1, fill: false, fillColor: '#00ffec', opacity: 0.2},
+  targetOptions: {useImg: true, imgUrl: 'dist/Leaflet.TrackPlayBack-master/dist/float.png'}
+}
+
+const trackplayback = L.trackplayback(tdata, map, Options);
+const trackplaybackControl = L.trackplaybackcontrol(trackplayback);
+trackplaybackControl.addTo(map);
+
+trackplayback.start()
+
+// trigger on time change
+trackplayback.on('tick', e => {
+  if(e.time>1546171200){
+	trackplayback.stop()
+  }
+}, this)
+
+function date2unix(date_time){
+	var unixtime = Date.parse(date_time).getTime()/1000	
+	return unixtime
+}
+
+</script>
+
+</body>
+</html>
