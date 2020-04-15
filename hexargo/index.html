@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Hexbin test 4 Argo</title>
+
+    <script src="index_atl.js"></script>
+
+	<link rel="stylesheet" href="components/leaflet/dist/leaflet.css" />
+
+	<script src="components/d3/dist/d3.js" charset="utf-8"></script>
+	<script src="components/d3-hexbin/build/d3-hexbin.js" charset="utf-8"></script>
+	<script src="components/leaflet/dist/leaflet-src.js"></script>
+
+    <script src="components/leaflet-d3.js" charset="utf-8"></script>
+	<script src="components/colorbrewer.js" charset="utf-8"></script>
+	
+	<script type="text/javascript" src="components/credits/leaflet-control-credits-src.js"></script>
+	<link rel="stylesheet" href="components/credits/leaflet-control-credits.css" />
+
+
+<style>
+	.hexbin-container:hover .hexbin-hexagon {
+	transition: 200ms;
+	stroke: rgb(0, 0, 0);
+	stroke-width: 1px;
+	stroke-opacity: 1;
+}
+</style>
+
+</head>	
+
+	<!-- The map element -->
+	<div id="map" style="position: absolute; height: 100%; width: 100%;"></div>		
+
+	<script>
+
+		var center = [ 40.0, -20.0 ];
+		var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 6,
+    minZoom: 3,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+
+    var options = {
+	    radius : 25,
+	    opacity: 0.5,
+	    duration: 100,
+	    colorScaleExtent: [ 1, 1000 ],
+	    radiusScaleExtent: [ 1, 1000 ],
+	    colorDomain: null,
+	    radiusDomain: null,
+        //colorRange: colorbrewer['Reds'][9],
+        colorRange:['#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'],
+	    radiusRange: [ 10, 25 ],
+	
+	    pointerEvents: 'all'
+    };
+
+		var map = L.map('map', {
+			layers: [ layer ],
+			center: L.latLng(center[0], center[1]), zoom: 4
+		});
+
+		var credctrl = L.controlCredits({
+			image: "toto.jpg",
+			link: "toto.fr",
+			text: "000",
+			height: 40,
+			width: 50
+		}).addTo(map);
+
+		//Custom hover function
+		L.HexbinHoverHandler.myHoverHandler = function() {
+		// return the handler instance
+		return {
+			mouseover: function (hexLayer, data) {
+			// hexLayer - reference to the L.HexbinLayer instance
+			// data - reference to the data bound to the hovered hexbin
+			// this - D3 wrapped DOM element for hovered hexbin
+			//console.log(data.length)
+			credctrl.setText(String(data.length)+" profiles")
+			},
+		mouseout: function (hexLayer, data) {}
+		};
+		};		
+
+		// Create the hexlayer
+        var hexLayer = L.hexbinLayer(options).hoverHandler(L.HexbinHoverHandler.myHoverHandler()).addTo(map);                		
+
+		// Random data generators
+		hexLayer.data(argo_index);		
+		
+		//hexLayer.colorScale(d3.scaleLinear().domain([1, 200]).range(['#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']));		
+	</script>
+</body>
+</html>
+
