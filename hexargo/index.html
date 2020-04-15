@@ -45,8 +45,8 @@
 	    radius : 25,
 	    opacity: 0.5,
 	    duration: 100,
-	    colorScaleExtent: [ 1, 1000 ],
-	    radiusScaleExtent: [ 1, 1000 ],
+	    colorScaleExtent: [ 1, 1500 ],
+	    radiusScaleExtent: [ 1, 1500 ],
 	    colorDomain: null,
 	    radiusDomain: null,
         //colorRange: colorbrewer['Reds'][9],
@@ -90,6 +90,13 @@
 		// Random data generators
 		hexLayer.data(argo_index);		
 		
+		map.on('zoomend', function() {
+   			zz=map.getZoom()
+			hexLayer.colorScaleExtent([ 1 , 1500/(zz-3) ])
+			hexLayer.radiusScaleExtent([ 1 , 1500/(zz-3) ])   
+			hexLayer.redraw()
+			//console.log('ok')
+		});
 		//hexLayer.colorScale(d3.scaleLinear().domain([1, 200]).range(['#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']));		
 	</script>
 </body>
