@@ -92,11 +92,24 @@
 		hexLayer.data(argo_index);		
 		
 		map.on('zoomend', function() {
-   			zz=map.getZoom()
-			hexLayer.colorScaleExtent([ 1 , 1500/(zz-3) ])
-			hexLayer.radiusScaleExtent([ 1 , 1500/(zz-3) ])   
-			hexLayer.redraw()
-			//console.log('ok')
+   			zz=map.getZoom()		    
+			switch (zz) {
+				case 3:
+					this_max=1500;
+					break;
+				case 4:
+					this_max=1000;
+					break;
+				case 5:
+				this_max=750;
+					break;
+				case 6:
+				this_max=500;
+					break;
+			}	
+			hexLayer.colorScaleExtent([ 1 , this_max ])
+			hexLayer.radiusScaleExtent([ 1 , this_max ])   
+			hexLayer.redraw()			
 		});
 		//hexLayer.colorScale(d3.scaleLinear().domain([1, 200]).range(['#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']));		
 	</script>
