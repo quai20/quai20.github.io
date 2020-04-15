@@ -35,30 +35,31 @@
 	<script>
 
 		var center = [ 40.0, -20.0 ];
+
 		var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 6,
-    minZoom: 3,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-});
+    	maxZoom: 6,
+    	minZoom: 3,
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		});
 
     var options = {
-	    radius : 25,
+	    radius : 30,
 	    opacity: 0.5,
 	    duration: 100,
 	    colorScaleExtent: [ 1, 1500 ],
 	    radiusScaleExtent: [ 1, 1500 ],
 	    colorDomain: null,
 	    radiusDomain: null,
-        //colorRange: colorbrewer['Reds'][9],
-        colorRange:['#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'],
-	    radiusRange: [ 10, 25 ],
+        colorRange: ['#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026'],
+        //colorRange:['#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'],
+	    radiusRange: [ 10, 30 ],
 	
 	    pointerEvents: 'all'
     };
 
 		var map = L.map('map', {
 			layers: [ layer ],
-			center: L.latLng(center[0], center[1]), zoom: 4
+			center: L.latLng(center[0], center[1]), zoom: 3
 		});
 
 		var credctrl = L.controlCredits({
