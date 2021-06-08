@@ -54,16 +54,15 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 L.control.mousePosition().addTo(map);
 
 var tdata=[];
-var trace=[];
-var moptions=[]
 
 //LOOP ON RUNNERS
 runners=['K','T','E','ER','J','L'];
-colors=['#000000','#000000','#000000','#000000','#000000','#000000']
+colors=['#d11141','#00b159','#00aedb','#f37735','#ffc425','#000000'];
+moptions=[];
+
 for (var i = 0; i < runners.length; i++)
 {		
-	var tempD=[]
-	console.log(i)
+	var tempD=[]	
 	eval('ldata=data_'+runners[i]);
 	for (var j = 0; j < ldata.length; j++)
 	{
@@ -73,20 +72,18 @@ for (var i = 0; i < runners.length; i++)
 		lon_end=ldata[j].longitude
 	}
 	tempD.push({lat:lat_end,lng:lon_end,time:time_end+1})	
-	tdata.push(tempD)
+	tdata.push(tempD)	
 
 	moptions[i] = {
     clockOptions: {speed: 9, maxSpeed: 11},
-    trackPointOptions: {isDraw: true, useCanvas: true, stroke: false, color: colors[i], fill: true, fillColor: colors[i], opacity: 0.5, radius: 1},
-    trackLineOptions: {isDraw: true, stroke: true, color: colors[i], weight: 1, fill: false, fillColor: colors[i], opacity: 0.5},
-    targetOptions: {useImg: true, imgUrl: 'dist/Leaflet.TrackPlayBack-master/dist/float.png'}
+    trackPointOptions: {isDraw: true, useCanvas: false, stroke: false, color: colors[i], fill: true, fillColor: colors[i], opacity: 0.5, radius: 1},
+    trackLineOptions: {isDraw: true, stroke: true, color: colors[i], weight: 1, fill: false, fillColor: colors[i], opacity: 0.5},    
+	targetOptions: {useImg: false, width: 6, height: 10, color: colors[i], fillColor: colors[i]}
 	}
 
-	var trackplayback = L.trackplayback(tdata, map, moptions[i]);
-
-	trace.push(trackplayback)
 }
 
+var trackplayback = L.trackplayback(tdata, map, moptions[0]);
 const trackplaybackControl = L.trackplaybackcontrol(trackplayback);
 trackplaybackControl.addTo(map);
 
