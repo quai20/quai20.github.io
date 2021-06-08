@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title> CLE DES VOLEURS </title>
+<meta charset="utf-8">
+
+<center><span id="kloader">
+
+	<div class='container'>
+	  <div class='loader'>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--dot'></div>
+		<div class='loader--text'></div>
+	  </div>
+	</div>
+</span></center>
+
+<link rel="stylesheet" href="my.css" />
+<!--leaflet & jquery-->
+<script src="dist/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" href="dist/leaflet/leaflet.css" />
+<script src="dist/leaflet/leaflet.js"></script>
+
+<!-- Mouse position -->
+<link rel="stylesheet" href="dist/Leaflet.MousePosition-master/src/L.Control.MousePosition.css" />
+<script src="dist/Leaflet.MousePosition-master/src/L.Control.MousePosition.js"></script>
+
+<!-- Playback -->
+<link rel="stylesheet" href="dist/Leaflet.TrackPlayBack-master/dist/control.playback.css">
+<script src="dist/Leaflet.TrackPlayBack-master/dist/control.trackplayback.js"></script>
+<script src="dist/Leaflet.TrackPlayBack-master/dist/leaflet.trackplayback.js"></script>
+<script type="text/javascript" src="dist/Datejs-master/build/date.js"></script>
+
+<!-- Some Data -->
+<script src="data.js"></script>
+
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+document.getElementById("kloader").textContent="";
+//MAP CREATION
+var map = L.map('map').setView([48.41, -4.56], 14);
+map.options.maxZoom=19;
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+//MOUSE POSITION
+L.control.mousePosition().addTo(map);
+
+var tdata=[];
+var trace=[];
+var moptions=[]
+
+//LOOP ON RUNNERS
+runners=['K','T','E','ER','J','L'];
+colors=['#000000','#000000','#000000','#000000','#000000','#000000']
+for (var i = 0; i < runners.length; i++)
+{		
+	var tempD=[]
+	console.log(i)
+	eval('ldata=data_'+runners[i]);
+	for (var j = 0; j < ldata.length; j++)
+	{
+		tempD.push({lat:ldata[j].latitude,lng:ldata[j].longitude,time:date2unix(ldata[j].time),info:[{key:'name :',value:ldata[j].name}]})	
+		time_end=date2unix(ldata[j].time)
+		lat_end=ldata[j].latitude
+		lon_end=ldata[j].longitude
+	}
+	tempD.push({lat:lat_end,lng:lon_end,time:time_end+1})	
+	tdata.push(tempD)
+
+	moptions[i] = {
+    clockOptions: {speed: 9, maxSpeed: 11},
+    trackPointOptions: {isDraw: true, useCanvas: true, stroke: false, color: colors[i], fill: true, fillColor: colors[i], opacity: 0.5, radius: 1},
+    trackLineOptions: {isDraw: true, stroke: true, color: colors[i], weight: 1, fill: false, fillColor: colors[i], opacity: 0.5},
+    targetOptions: {useImg: true, imgUrl: 'dist/Leaflet.TrackPlayBack-master/dist/float.png'}
+	}
+
+	var trackplayback = L.trackplayback(tdata, map, moptions[i]);
+
+	trace.push(trackplayback)
+}
+
+const trackplaybackControl = L.trackplaybackcontrol(trackplayback);
+trackplaybackControl.addTo(map);
+
+//trackplayback.start()
+
+// trigger on time change
+trackplayback.on('tick', e => {
+  if(e.time>1622982100){
+	trackplayback.stop()
+  }
+}, this)
+
+function date2unix(date_time){
+	var unixtime = Date.parse(date_time).getTime()/1000	
+	return unixtime
+}
+
+</script>
+
+</body>
+</html>
