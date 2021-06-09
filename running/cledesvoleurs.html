@@ -29,14 +29,12 @@
 <link rel="stylesheet" href="dist/Leaflet.MousePosition-master/src/L.Control.MousePosition.css" />
 <script src="dist/Leaflet.MousePosition-master/src/L.Control.MousePosition.js"></script>
 
-<!-- Playback -->
-<link rel="stylesheet" href="dist/Leaflet.TrackPlayBack-master/dist/control.playback.css">
-<script src="dist/Leaflet.TrackPlayBack-master/dist/control.trackplayback.js"></script>
-<script src="dist/Leaflet.TrackPlayBack-master/dist/leaflet.trackplayback.js"></script>
-<script type="text/javascript" src="dist/Datejs-master/build/date.js"></script>
+<link rel="stylesheet" href="dist/beautifyMarker/leaflet-beautify-marker-icon.css">
+<script src="dist/beautifyMarker/leaflet-beautify-marker-icon.js"></script>
 
-<!-- Some Data -->
-<script src="data.js"></script>
+<!-- Playback -->
+<script src="dist/LeafletPlayback/LeafletPlayback.js"></script>
+<script src="dtracks.js"></script>
 
 </head>
 <body>
@@ -53,53 +51,39 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //MOUSE POSITION
 L.control.mousePosition().addTo(map);
 
-var tdata=[];
+L.geoJSON(circuit, {style:{"color": "#000", "weight": 1,}}).addTo(map);
 
-//LOOP ON RUNNERS
-runners=['K','T','E','ER','J','L'];
-colors=['#d11141','#00b159','#00aedb','#f37735','#ffc425','#000000'];
-moptions=[];
+// Colors for AwesomeMarkers
+var _colorIdx = 0,
+        _colors = [
+          'orange',
+          'green',
+          'yellow',
+          'purple',
+          'darkred',
+          'cadetblue',
+          'red',
+          'darkgreen',
+          'darkblue',
+          'darkpurple'
+        ];
 
-for (var i = 0; i < runners.length; i++)
-{		
-	var tempD=[]	
-	eval('ldata=data_'+runners[i]);
-	for (var j = 0; j < ldata.length; j++)
-	{
-		tempD.push({lat:ldata[j].latitude,lng:ldata[j].longitude,time:date2unix(ldata[j].time),info:[{key:'name :',value:ldata[j].name}]})	
-		time_end=date2unix(ldata[j].time)
-		lat_end=ldata[j].latitude
-		lon_end=ldata[j].longitude
-	}
-	tempD.push({lat:lat_end,lng:lon_end,time:time_end+1})	
-	tdata.push(tempD)	
-
-	moptions[i] = {
-    clockOptions: {speed: 9, maxSpeed: 11},
-    trackPointOptions: {isDraw: true, useCanvas: false, stroke: false, color: colors[i], fill: true, fillColor: colors[i], opacity: 0.5, radius: 1},
-    trackLineOptions: {isDraw: true, stroke: true, color: colors[i], weight: 1, fill: false, fillColor: colors[i], opacity: 0.5},    
-	targetOptions: {useImg: false, width: 6, height: 10, color: colors[i], fillColor: colors[i]}
-	}
-
-}
-
-var trackplayback = L.trackplayback(tdata, map, moptions[0]);
-const trackplaybackControl = L.trackplaybackcontrol(trackplayback);
-trackplaybackControl.addTo(map);
-
-//trackplayback.start()
-
-// trigger on time change
-trackplayback.on('tick', e => {
-  if(e.time>1622982100){
-	trackplayback.stop()
-  }
-}, this)
-
-function date2unix(date_time){
-	var unixtime = Date.parse(date_time).getTime()/1000	
-	return unixtime
-}
+// Playback options
+var playbackOptions = {	    
+        playControl: true,
+        dateControl: true,
+        sliderControl: true,		
+		speed: 150.,			
+		marker: function(){
+			optMark = {iconShape: 'doughnut', iconSize: [10,10], iconAnchor: [10,10], borderWidth: 1, borderColor: '#000', backgroundColor: _colors[_colorIdx++%10]}	
+            return {
+                icon: L.BeautifyIcon.icon(optMark)				
+            };
+        } 	     
+    };
+        
+// Initialize playback
+var playback = new L.Playback(map, dTracks, null, playbackOptions);  
 
 </script>
 
