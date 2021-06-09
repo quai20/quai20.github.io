@@ -54,19 +54,8 @@ L.control.mousePosition().addTo(map);
 L.geoJSON(circuit, {style:{"color": "#000", "weight": 1,}}).addTo(map);
 
 // Colors for AwesomeMarkers
-var _colorIdx = 0,
-        _colors = [
-          'orange',
-          'green',
-          'yellow',
-          'purple',
-          'darkred',
-          'cadetblue',
-          'red',
-          'darkgreen',
-          'darkblue',
-          'darkpurple'
-        ];
+var _colorIdx = 0, _colors = ['#008744','#0057e7','#d62d20','#ffa700','#5bc0de','#ffeead','#fe00f6','#7289da'];
+var runners = ['kevin', 'julien', 'tibo', 'erwan', 'erwann', 'ludo', 'manu'];
 
 // Playback options
 var playbackOptions = {	    
@@ -84,6 +73,23 @@ var playbackOptions = {
         
 // Initialize playback
 var playback = new L.Playback(map, dTracks, null, playbackOptions);  
+
+/*Legend specific*/
+var legend = L.control({ position: "topright" });
+
+legend.onAdd = function(map) {
+  var div = L.DomUtil.create("div", "legend");
+  div.innerHTML += "<h4>Runners</h4>";
+  
+  for (var i = 0; i < runners.length; i++) {
+	div.innerHTML += '<i id="circle" style="background:'+_colors[i]+'"></i><span>'+runners[i]+'</span><br>';
+  }
+
+  return div;
+};
+
+legend.addTo(map);
+
 
 </script>
 
