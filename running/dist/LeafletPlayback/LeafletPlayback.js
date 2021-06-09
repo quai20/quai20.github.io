@@ -40,7 +40,7 @@ L.Playback.Util = L.Class.extend({
       if (h === 0) h = 12;
       if (m < 10) m = '0' + m;
       if (s < 10) s = '0' + s;
-      return h + ':' + m + ':' + s + dec + ' ' + mer;
+      return ' ' + h + ':' + m + ':' + s + dec;
     },
 
     ParseGPX: function(gpx) {
